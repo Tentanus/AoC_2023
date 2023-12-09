@@ -9,7 +9,7 @@ SRC_DIR			:=	src
 INC_DIR			:=	inc
 LIB_DIR			:=	lib
 
-SRC				:=	code.cpp
+SRC				:=	code2.cpp
 
 OBJ				:=	$(SRC:%.cpp=$(OBJ_DIR)/%.o)
 SRC				:=	$(SRC:%=$(SRC_DIR)/%)
