@@ -1,7 +1,3 @@
-#include <fstream>
-#include <iostream>
-#include <regex>
-#include <map>
 
 #include <code2.hpp>
 
