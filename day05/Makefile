@@ -14,7 +14,11 @@ SRC				:=	code.cpp
 OBJ_1			:=	$(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJ_2			:=	$(SRC:%.cpp=$(OBJ_DIR)/%2.o)
 SRC				:=	$(SRC:%=$(SRC_DIR)/%)
+DEP				:=	$(OBJ_1:.o=.d)	\
+					$(OBJ_2:.o=.d)
 DIR_LIST		:=	$(sort $(dir $(OBJ_1)))
+
+-include $(DEP)
 
 #============= COMPILATION ==============#
 
@@ -66,7 +70,7 @@ exe2: $(OBJ_2)
 	@echo "$(COMPILE) $(INCLUDE) $(CYAN)$(notdir $(OBJ_2))$(RESET) -o $(NAME)_2"
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.cpp
-	@$(COMPILE) $(INCLUDE) -o $@ -c $< 
+	@$(COMPILE) $(INCLUDE) -MMD -o $@ -c $< 
 	@echo "$(CYAN)COMPILE $(INFO_FL) $(notdir $(<:%.c=%))$(RESET)"
 
 clean:
