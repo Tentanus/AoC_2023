@@ -3,6 +3,8 @@
 #include <regex>
 #include <map>
 
+#include <code2.hpp>
+
 #define REPORT(X) std::cout << (X)
 
 int main(int argc, char* argv[])
