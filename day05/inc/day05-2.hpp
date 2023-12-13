@@ -34,6 +34,15 @@ class seedlist
 
 //		std::cout << "ENDING SEEDLIST\n";
 	};
+	bool possibleseed(long long sd) {
+		for (size_t i = 0; i < seed.size(); i++)
+		{
+//			std::cout << " |" << seed.at(i) << " - " << (seed.at(i) + range.at(i)) << "| ";
+			if (sd >= seed.at(i) && sd < (seed.at(i) + range.at(i)))
+				return (true);
+		}
+		return (false);
+	};
 };
 
 class mute
@@ -64,8 +73,13 @@ class mute
 	bool isin_src_range(const long long inp) const {
 		return (inp >= _src && inp < _src + _range);
 	};
+	bool isin_dst_range(const long long inp) const {
+		return (inp >= _dst && inp < _dst + _range);
+	};
+	long long get_src(const long long inp) const {
+		return (_src + (inp - _dst));
+	};
 	long long get_dst(const long long inp) const {
-//		std::cout<<"case: "<<_dst<<" + ("<<inp<<" - "<<_src<<std::endl;
 		return (_dst + (inp - _src));
 	};
 };

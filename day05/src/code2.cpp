@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     {
         if (line.empty())
         {
-            Almanac.emplace_back(almap);
+            Almanac.insert(Almanac.begin(), almap);
             std::getline(infile, line);
             almap = Almap(line);
             continue;
@@ -40,47 +40,52 @@ int main(int argc, char* argv[])
 //        #endif
 
         mute mapmute(line);
-        almap.mutes.emplace_back(mapmute);
+        almap.mutes.insert(almap.mutes.begin(), mapmute);
     }
-    Almanac.emplace_back(almap);
+    Almanac.insert(Almanac.begin(), almap);
+/*
+    for (auto almap : Almanac)
+    {
+        REPORT("MAP:\t")    << almap.to << " - " << almap.from << std::endl;
+        for (auto mute : almap.mutes)
+        {
+            REPORT("MUTES: ")   << mute._dst << " - " << mute._src 
+                                << "\t" << mute._range << std::endl;
+        }
 
-    long long res = __LONG_LONG_MAX__;
-    long long seed_res;
+    }
+    REPORT(std::endl);
+    */
 
 //    for ( size_t i = 0 ; i < list.seed.size() ; i++)
 //    {
 //        REPORT("seed & range: ") << list.seed.at(i) << " " << list.range.at(i) << std::endl;
 //    }
-
-    for (size_t i = 0 ; i < list.seed.size() ; i++)
+//
+    for (long long i = 0 ; i < __LONG_LONG_MAX__ ; i++)
     {
-        REPORT("NEW SEED RANGE: ") << i << "\n";
-        for (long long j = 0 ; j < list.range[i] ; j++)
+        long long nbr = i;
+        REPORT("LOCATION: ") << i;
+        for (Almap alm : Almanac)
         {
-//            REPORT("seed: ") << list.seed[i] + j;
-            long long nbr = list.seed[i] + j;
-            for (Almap alm : Almanac)
+            for (mute mu : alm.mutes)
             {
-                for (mute mu : alm.mutes)
+                if (mu.isin_dst_range(nbr))
                 {
-                    if (mu.isin_src_range(nbr))
-                    {
-                        nbr = mu.get_dst(nbr);
-                        break;
-                    }
+                    nbr = mu.get_src(nbr);
+//                    REPORT(" -> ") << nbr;
+                    break;
                 }
-//                REPORT(" -> ") << nbr;
             }
-            if (nbr < res)
-            {
-                REPORT(" !NEW LOW!");
-                res = nbr;
-                seed_res = list.seed[i] + j;
-            }
-            REPORT(std::endl);
+//            REPORT(" -> ") << nbr;    
         }
-    }
 
-    REPORT("Seed:\t") << seed_res << " @ Location: " << res << std::endl;
-    return (1);
+        if (list.possibleseed(nbr))
+        {
+            REPORT(" !NEW LOW! ") << nbr;
+            break;
+        }
+        REPORT(std::endl);    
+    }
+    return (0);
 }
