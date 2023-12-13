@@ -57,8 +57,7 @@ int main(int argc, char* argv[])
         REPORT("NEW SEED RANGE: ") << i << "\n";
         for (long long j = 0 ; j < list.range[i] ; j++)
         {
-            REPORT("seed: ") << list.seed[i] + j;
-
+//            REPORT("seed: ") << list.seed[i] + j;
             long long nbr = list.seed[i] + j;
             for (Almap alm : Almanac)
             {
@@ -70,7 +69,7 @@ int main(int argc, char* argv[])
                         break;
                     }
                 }
-                REPORT(" -> ") << nbr;
+//                REPORT(" -> ") << nbr;
             }
             if (nbr < res)
             {
