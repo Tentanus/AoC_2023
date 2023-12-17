@@ -15,8 +15,6 @@ int main(int argc, char *argv[]) {
 
   std::getline(infile, line);
 
-  // REPORT("line") << line << std::endl;
-
   seedlist list(line.substr(7, line.length() - 7));
 
   std::vector<Almap> Almanac;
@@ -27,50 +25,35 @@ int main(int argc, char *argv[]) {
 
   while (std::getline(infile, line)) {
     if (line.empty()) {
-      Almanac.emplace_back(almap);
+      Almanac.insert(Almanac.begin(), almap);
       std::getline(infile, line);
       almap = Almap(line);
       continue;
     }
 
     mute mapmute(line);
-    almap.mutes.emplace_back(mapmute);
+    almap.mutes.insert(almap.mutes.begin(), mapmute);
   }
-  Almanac.emplace_back(almap);
 
-  long long res = __LONG_LONG_MAX__;
-  long long seed_res;
+  Almanac.insert(Almanac.begin(), almap);
 
-  //    for ( size_t i = 0 ; i < list.seed.size() ; i++)
-  //    {
-  //        REPORT("seed & range: ") << list.seed.at(i) << " " <<
-  //        list.range.at(i) << std::endl;
-  //    }
-
-  for (size_t i = 0; i < list.seed.size(); i++) {
-    REPORT("NEW SEED RANGE: ") << i << "\n";
-    for (long long j = 0; j < list.range[i]; j++) {
-      REPORT("seed: ") << list.seed[i] + j;
-
-      long long nbr = list.seed[i] + j;
-      for (Almap alm : Almanac) {
-        for (mute mu : alm.mutes) {
-          if (mu.isin_src_range(nbr)) {
-            nbr = mu.get_dst(nbr);
-            break;
-          }
+  for (long long i = 0; i < __LONG_LONG_MAX__; i += 100) {
+    long long nbr = i;
+    for (Almap alm : Almanac) {
+      for (mute mu : alm.mutes) {
+        if (mu.isin_dst_range(nbr)) {
+          nbr = mu.get_src(nbr);
+          break;
         }
-        REPORT(" -> ") << nbr;
       }
-      if (nbr < res) {
-        REPORT(" !NEW LOW!");
-        res = nbr;
-        seed_res = list.seed[i] + j;
-      }
-      REPORT(std::endl);
     }
+
+    if (list.possibleseed(nbr)) {
+      REPORT(" !NEW LOW! ") << nbr;
+      break;
+    }
+    REPORT(std::endl);
   }
 
-  REPORT("Seed:\t") << seed_res << " @ Location: " << res << std::endl;
-  return (1);
+  return (0);
 }

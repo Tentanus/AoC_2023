@@ -1,5 +1,5 @@
 
-#include <code2.hpp>
+#include <code-2.hpp>
 
 #define REPORT(X) std::cout << (X)
 
