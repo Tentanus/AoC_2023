@@ -23,5 +23,5 @@ int main(int argc, char* argv[])
     }
 
     REPORT("Result:\t") << res << std::endl;
-    return (1);
+    return (0);
 }
