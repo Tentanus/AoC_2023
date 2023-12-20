@@ -1,1 +1,3 @@
 .vscode/*
+day*/.cache/
+day*/compile_commands.json
