@@ -1,3 +1,5 @@
-.vscode/*
+.vscode/
 day*/.cache/
 day*/compile_commands.json
+*/input.txt
+*/xinput.txt
